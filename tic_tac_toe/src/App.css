@@ -1,0 +1,99 @@
+*{
+  box-sizing: border-box;
+}
+body{
+  margin: 0px;
+  padding: 0px;
+  overflow: hidden;
+}
+
+h1{
+  margin: 0,0,25px,0;
+  padding: 0px;
+}
+
+.container{
+  position: relative;
+  display: flex;
+  height: 100VH;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(132,133,135);
+  flex-direction: column;
+}
+
+
+table,tr, td {
+  border: 3px solid black;
+  padding: 0;
+  margin: 0;
+  border-radius: 10px;
+  background-color: black;
+}
+
+
+td{
+  font-size: 5vw;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: center;
+  height: 100px;
+  width: 100px;
+  background-color: white;
+  opacity: 0.9;
+}
+
+/* 遊戲結束後避免發生後續點擊 */
+.shield{
+  pointer-events: none;
+}
+
+
+.endview{
+  width: 500px;
+  height: 300px;
+  background-color: white;
+  border: 5px solid black;
+  border-radius: 25px;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 28px;
+  font-weight: 700;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: column;
+  opacity: 0.8;
+}
+
+
+.restartButton{
+  text-align: center;
+  font-size: 28px;
+  padding: 15px 32px;
+  border-radius: 10px;
+  cursor: pointer;
+  background-color: white;
+}
+
+.restartButton:hover{
+  background-color: black;
+  color: white;
+
+}
+
+.viewblur{  
+  animation-name: blureffect;
+  animation-duration: 1s;
+  animation-timing-function: ease;
+  animation-fill-mode: forwards;
+}
+
+@keyframes blureffect{
+  from{filter: blur(0px);}
+  to{filter: blur(5px);}
+}
