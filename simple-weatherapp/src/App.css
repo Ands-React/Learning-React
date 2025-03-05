@@ -1,0 +1,124 @@
+
+*{
+  box-sizing: border-box;
+}
+body{ 
+ margin: 0px;
+ padding: 0px;
+}
+.container{
+  background-image: url(../public/forest.webp);
+  background-attachment: fixed;
+  background-size: cover;
+  background-repeat: no-repeat;
+  display:grid;
+  grid-template-columns:repeat(12,1fr);
+  align-content:center;
+  height: 100vh;
+  gap:30px;
+  overflow: auto;
+}
+
+.typeLayout {
+  grid-column:4/10;
+  background-color: white;
+  border-radius: 25px;
+  opacity: 0.65;
+  text-align: center;
+  height: 40vh;
+  position: relative;
+}
+.layouttitle{
+  margin: 0;
+  padding: 5px 0px;
+  width: inherit;
+  border-radius: 25px 25px 0px 0px;
+  background-color: #4C8DAD;
+}
+.sendcoord{
+  margin: 0px;
+  padding: 0px;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 30vh;
+
+}
+#sendcoord{
+  width: 40%;
+  height: 40px;
+  margin: 10px;
+  border-radius: 5px;
+  font-size: 16px;
+}
+#sendcoord::placeholder{
+  color: #FF6670;
+  font-family: "Rubik", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+
+.fontAwesomeStyle{
+  font-size: 48px;
+}
+
+.displayInfo{
+  display:none;
+  grid-row-start:2;
+  grid-column:1/ span 12;
+  margin: 0px 20px;
+  height:30vh;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.detailsInfo{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  flex: 1 1 0px;
+  height: 100%; 
+  border-radius: 25px;
+  background-color:white;
+  opacity: 0.65;
+  font-size: 1rem;
+}
+
+.animate {
+  animation: clickAnimation 2s linear;
+}
+
+@keyframes clickAnimation{
+  from {opacity:0;}
+  to {opacity: 0.65;}
+}
+
+.detailsInfo h3{
+  font-family: "Rubik", sans-serif;
+  font-weight: 600;
+  font-style: normal;
+  text-align: center;
+}
+
+.detailsInfo div{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  font-weight: 600;
+  font-size: 24px;
+}
+
+@media screen and (max-width: 600px) {
+  .fontAwesomeStyle{
+    font-size: 1fr;
+  }
+
+  
+}
