@@ -1,0 +1,159 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+*{
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+body,html{
+  overflow: auto;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* 或者任意你想要的高度 */
+}
+.container{
+  display: grid;
+  grid-template-rows: 1fr 3fr;
+  width: 70dvw;
+  height: 70dvh;
+  background-color: white;
+  gap: 10px;
+}
+.feature{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* background-color: red; */
+  margin: 10px;
+}
+
+button{
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition-property: background-color, color;
+  transition-duration: 0.2s;
+  transition-timing-function: ease-in-out;
+}
+
+input{
+  width: 90%;
+  height: 30px;
+}
+
+.updatebutton{
+  background-color: #E03346;
+  border: 2px solid #E03346;
+  color: #f1f1f1;
+}
+
+.savebutton{
+  background-color: #188753;
+  border: 2px solid #188753;
+  color: #f1f1f1;
+}
+
+.check{
+  color: black;
+}
+
+.addbutton{
+  background-color: #0D6EFC;
+  border: 2px solid #0D6EFC;
+  color: #f1f1f1; 
+}
+
+
+.updatebutton:hover, .savebutton:hover, .addbutton:hover{
+  background-color: white;
+  color: black;
+}
+
+.updatebutton:active, .savebutton:active, .addbutton:active{
+  background-color: white;
+  color: black;
+  box-shadow: inset 5px 5px 8px rgba(0, 0, 0, 0.7);
+}
+
+.employeeinfo{
+
+  margin: 10px;
+  overflow: auto;
+}
+
+table{
+  width: 100%;
+  border-collapse: collapse;
+}
+
+tr,td{
+  border-bottom: 1px solid #E2E1E3;
+  text-align: left;
+}
+
+
+.errormessage{
+  margin: 0px 0px 10px 0px;
+  padding: 0;
+  color: red;
+}
+.errormessage::after{
+  content: url("./img/arrow-turn-up-solid.svg");
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  fill: red;
+}
+
+.deletebutton{
+  text-align: center;
+  
+}
+.deletebutton button{
+  background-color: #FF4B4B;
+  width: 60px;
+  margin: 5px 0px 5px 0px;
+  box-shadow: 0px 2px 5px 2px rgba(0, 0, 0, 0.7);
+  border: none;
+  transition: box-shadow 0.3s ease;
+}
+.deletebutton button:active {
+  box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.7);
+  }
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+  
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey; 
+  background: #f1f1f1; 
+  border-radius: 10px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+  border: 4px solid transparent;
+  background-clip: padding-box;  
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+  background-clip: padding-box;  
+}
