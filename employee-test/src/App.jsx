@@ -4,12 +4,15 @@ import { ErrorMessage } from "@hookform/error-message"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons'
 import { v4 as uuidv4 } from "uuid";
+
 import axios from "axios";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
 
 function App() {
+  const apiUrl = import.meta.env.VITE_API_URL;
+
   const [fetchemployee, setfetchemployee] = useState([]);
   const formRef = useRef()
 
@@ -25,7 +28,7 @@ function App() {
     const employee = Object.values(data.employee)
     console.log(data)
     try{
-      const res = await axios.post("http://nexifytw.mynetgear.com:45000/api/Record/SaveRecords",employee)
+      const res = await axios.post(apiUrl,employee)
       console.log(res)
     }catch(error){
       console.log(error)
