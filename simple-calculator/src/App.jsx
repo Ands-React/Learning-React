@@ -2,17 +2,20 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import {useSelector, useDispatch} from 'react-redux'
+import { setCheck, setTarget } from './features/calculatorSlice' // Added setTarget
 
 function App() {
-  const [count, setCount] = useState(0)
+  const calculator = useSelector(state => state.calculator)
+  const dispatch = useDispatch()
 
   return (
     <>
       <div className='container'>
-        <div className='displayresult'></div>
+        <div className='displayresult'>{calculator.value}</div>
         <div className='keyboard'>
           <input className='keycell allClear' type="button" value="AC"/>
-          <input className='keycell' type="button" value="%"/>
+          <input className='keycell' type="button" value="%" onClick={(e) => dispatch(setTarget(e.target.value))}/>
           <input className='keycell' type="button" value="/"/>
           <input className='keycell' type="button" value="7"/>
           <input className='keycell' type="button" value="8"/>
@@ -28,7 +31,7 @@ function App() {
           <input className='keycell' type="button" value="+"/>
           <input className='keycell' type="button" value="0"/>
           <input className='keycell' type="button" value="."/>
-          <input className='keycell amount' type="button" value="="/>
+          <input className='keycell amount' type="button" value="=" onClick={() => dispatch(setCheck())}/>
         </div>
       </div>
     </>
