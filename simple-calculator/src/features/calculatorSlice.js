@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {Decimal} from 'decimal.js';
+import { Decimal } from "decimal.js";
 
 const getDivisionNum = (a, b) => {
   return new Decimal(a).div(b).toString();
@@ -10,12 +10,18 @@ const getMultipleNum = (a, b) => {
 };
 
 function getPercentNum(a) {
-  return new Decimal(a).div(100) // 計算百分比
+  return new Decimal(a).div(100).toString(); // 計算百分比
 }
 
 // 執行剩餘的 + 和 - 運算
 function runCodeWithFunction(obj) {
-  return Function(`"use strict";return (${obj});`)();
+  obj = obj.replace(/\b0+(\d+)/g, '$1'); // 移除數字中的前導零
+  try {
+    return Function(`"use strict";return (${obj}).toString();`)();
+} catch (error) {
+    console.error("錯誤:", error.message);
+    throw new Error("無效的表達式: " + obj);
+}
 }
 
 // 優先處理 x, /, % 的需求
@@ -30,7 +36,7 @@ function getPriorityNum(obj) {
       // 緩存索引
       const xIndex = regex.indexOf("x");
       const divIndex = regex.indexOf("/");
-      const modIndex = regex.indexOf("%");
+      const percentIndex = regex.indexOf("%");
 
       // 找到優先級最高的運算符
       let opIndex = -1;
@@ -38,8 +44,10 @@ function getPriorityNum(obj) {
         opIndex = xIndex;
       if (divIndex !== -1 && (opIndex === -1 || divIndex < opIndex))
         opIndex = divIndex;
-      if (modIndex !== -1 && (opIndex === -1 || modIndex < opIndex))
-        opIndex = modIndex;
+
+      // 百分號比較不一樣，要優先於 x, /
+      if (percentIndex !== -1 && (opIndex === -1 || percentIndex > opIndex))
+        opIndex = percentIndex;
 
       // 根據運算符執行對應操作
       const operator = regex[opIndex];
@@ -68,13 +76,17 @@ function getPriorityNum(obj) {
   }
 
   // 若 regex 等於 1，則直接回傳結果，否則執行剩餘運算
-  return regex.length === 1 ? regex[0] : runCodeWithFunction(regex.join(""))
+  if (regex.length === 1) {
+    return regex[0];
+  }else{
+    return runCodeWithFunction(regex.join(""));
+  }
 }
 
 const initialState = {
   value: 0,
   statment: "",
-  result: "",
+  result: 0,
 };
 
 export const calculatorSlice = createSlice({
@@ -84,15 +96,25 @@ export const calculatorSlice = createSlice({
     setTarget: (state, action) => {
       state.value += action.payload;
     },
-    setCheck: (state) => {
-      console.log(state.value);
+    setStatemt: (state) => {
+      state.statment = state.value;
     },
-    setResult: (state) => {
+    setCalcu: (state) => {
+      // 計算結果 (result) 為字串
       state.result = getPriorityNum(state.value);
     },
-
+    setReset: (state) => {
+      state.value = 0;
+      state.statment = "";
+      state.result = 0;
+    },
+    setCheck: (state) => {
+      console.log(state.value);
+      console.log(state.statment);
+      console.log(state.result);
+    },
   },
 });
 
-export const { setTarget, setCheck } = calculatorSlice.actions;
+export const { setTarget, setCheck, setCalcu, setReset, setStatemt } = calculatorSlice.actions;
 export default calculatorSlice.reducer;
