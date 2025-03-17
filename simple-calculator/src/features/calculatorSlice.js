@@ -15,13 +15,13 @@ function getPercentNum(a) {
 
 // 執行剩餘的 + 和 - 運算
 function runCodeWithFunction(obj) {
-  obj = obj.replace(/\b0+(\d+)/g, '$1'); // 移除數字中的前導零
+  obj = obj.replace(/\b0+(\d+)/g, "$1"); // 移除數字中的前導零，例如 0001 -> 1
   try {
     return Function(`"use strict";return (${obj}).toString();`)();
-} catch (error) {
+  } catch (error) {
     console.error("錯誤:", error.message);
     throw new Error("無效的表達式: " + obj);
-}
+  }
 }
 
 // 優先處理 x, /, % 的需求
@@ -60,7 +60,7 @@ function getPriorityNum(obj) {
       } else if (operator === "/") {
         result = getDivisionNum(left, right);
       } else if (operator === "%") {
-        result = getPercentNum(left); // 假設你有一個對應處理 % 的函數
+        result = getPercentNum(left);
       }
 
       // 替換運算結果到 regex
@@ -78,7 +78,7 @@ function getPriorityNum(obj) {
   // 若 regex 等於 1，則直接回傳結果，否則執行剩餘運算
   if (regex.length === 1) {
     return regex[0];
-  }else{
+  } else {
     return runCodeWithFunction(regex.join(""));
   }
 }
@@ -94,27 +94,43 @@ export const calculatorSlice = createSlice({
   initialState,
   reducers: {
     setTarget: (state, action) => {
-      state.value += action.payload;
+      if (state.result) {
+        state.result += action.payload;
+      } else {
+        state.value += action.payload;
+      }
     },
     setStatemt: (state) => {
-      state.statment = state.value;
+      if (state.result) {
+        state.statment = state.result;
+      } else {
+        state.statment = state.value;
+      }
     },
     setCalcu: (state) => {
       // 計算結果 (result) 為字串
-      state.result = getPriorityNum(state.value);
+      if (state.result) {
+        state.result = getPriorityNum(state.result);
+      } else {
+        state.result = getPriorityNum(state.value);
+      }
     },
     setReset: (state) => {
       state.value = 0;
       state.statment = "";
       state.result = 0;
     },
-    setCheck: (state) => {
-      console.log(state.value);
-      console.log(state.statment);
-      console.log(state.result);
+    
+    setBack: (state) => {
+      if (state.result) {
+        state.result = state.result.slice(0, -1);
+      } else  {
+        state.value = state.value.slice(0, -1);
+      }
     },
   },
 });
 
-export const { setTarget, setCheck, setCalcu, setReset, setStatemt } = calculatorSlice.actions;
+export const { setTarget, setCalcu, setReset, setStatemt, setBack } =
+  calculatorSlice.actions;
 export default calculatorSlice.reducer;

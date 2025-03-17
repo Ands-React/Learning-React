@@ -1,9 +1,9 @@
-import { useState } from 'react'
+
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import {useSelector, useDispatch} from 'react-redux'
-import { setCheck, setTarget, setReset, setCalcu, setStatemt } from './features/calculatorSlice' // Added setTarget
+import {setTarget, setReset, setCalcu, setStatemt,setBack } from './features/calculatorSlice' // Added setTarget
 
 function App() {
   const calculator = useSelector(state => state.calculator)
@@ -31,27 +31,27 @@ function App() {
 
         </div>
         <div className='keyboard'>
-          <input className='keycell allClear'  type="button" value="AC" onClick={() => dispatch(setReset())}/>
-          <input className='keycell' type="button" value="%" onClick={(e) => dispatch(setTarget(e.target.value))}/>
-          <input className='keycell' type="button" value="/" onClick={(e) => dispatch(setTarget(e.target.value))}/>
+          <input className='keycell allClear btn-feature'  type="button" value="AC" onClick={() => dispatch(setReset())}/>
+          <input className='keycell btn-feature' type="button" value="←" onClick={() => dispatch(setBack())}/>
+          <input className='keycell btn-feature' type="button" value="%" onClick={(e) => dispatch(setTarget(e.target.value))}/>
+          <input className='keycell btn-feature' type="button" value="/" onClick={(e) => dispatch(setTarget(e.target.value))}/>
           <input className='keycell' type="button" value="7" onClick={(e) => dispatch(setTarget(e.target.value))}/>
           <input className='keycell' type="button" value="8" onClick={(e) => dispatch(setTarget(e.target.value))}/>
           <input className='keycell' type="button" value="9" onClick={(e) => dispatch(setTarget(e.target.value))}/>
-          <input className='keycell' type="button" value="x" onClick={(e) => dispatch(setTarget(e.target.value))}/>
+          <input className='keycell btn-feature' type="button" value="x" onClick={(e) => dispatch(setTarget(e.target.value))}/>
           <input className='keycell' type="button" value="4" onClick={(e) => dispatch(setTarget(e.target.value))}/>
           <input className='keycell' type="button" value="5" onClick={(e) => dispatch(setTarget(e.target.value))}/>
           <input className='keycell' type="button" value="6" onClick={(e) => dispatch(setTarget(e.target.value))}/>
-          <input className='keycell' type="button" value="-" onClick={(e) => dispatch(setTarget(e.target.value))}/>
+          <input className='keycell btn-feature' type="button" value="-" onClick={(e) => dispatch(setTarget(e.target.value))}/>
           <input className='keycell' type="button" value="1" onClick={(e) => dispatch(setTarget(e.target.value))}/>
           <input className='keycell' type="button" value="2" onClick={(e) => dispatch(setTarget(e.target.value))}/>
           <input className='keycell' type="button" value="3" onClick={(e) => dispatch(setTarget(e.target.value))}/>
-          <input className='keycell' type="button" value="+" onClick={(e) => dispatch(setTarget(e.target.value))}/>
+          <input className='keycell btn-feature' type="button" value="+" onClick={(e) => dispatch(setTarget(e.target.value))}/>
           <input className='keycell' type="button" value="0" onClick={(e) => dispatch(setTarget(e.target.value))}/>
           <input className='keycell' type="button" value="." onClick={(e) => dispatch(setTarget(e.target.value))}/>
-          <input className='keycell amount' type="button" value="=" onClick={handleCalculate}/>
+          <input className='keycell amount btn-feature' type="button" value="=" onClick={handleCalculate}/>
         </div>
       </div>
-      <button  onClick={() => dispatch(setCheck())}>Check</button>
     </>
   )
 }
