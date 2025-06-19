@@ -53,7 +53,7 @@ export const InsertUI = () => {
 
     return () => {
       clearInterval(rolling);
-      console.log("setInterval 被清除了");
+      // console.log("setInterval 被清除了");
     };
   }, [dispatch]);
 
@@ -61,7 +61,7 @@ export const InsertUI = () => {
     // 根據模式載入 indexedDB 中的數據。
     const load = async (type) => {
       const getDataByIndexedDB = await getData(type);
-      console.log(getDataByIndexedDB);
+      // console.log(getDataByIndexedDB);
       if (!getDataByIndexedDB) return;
       // indexedDB有數據才執行
       if (getDataByIndexedDB) {
@@ -75,7 +75,7 @@ export const InsertUI = () => {
         setEditorKey(1);
       }
 
-      console.log("getDataByIndexedDB : ", getDataByIndexedDB);
+      // console.log("getDataByIndexedDB : ", getDataByIndexedDB);
     };
     if (dataToIndexedDB.type) {
       load(dataToIndexedDB.type);
@@ -84,7 +84,7 @@ export const InsertUI = () => {
 
   const handleEditorChange = (newValue) => {
     // 從 editor 取得目前選區的 marks
-    console.log("slate內容 :", newValue);
+    // console.log("slate內容 :", newValue);
     const marks = Editor.marks(editor);
     const isAstChange = editor.operations.some(
       (op) => "set_selection" !== op.type
@@ -135,7 +135,7 @@ export const InsertUI = () => {
       dispatch(editArticlesToDB(articleData));
     }
 
-    console.log(Object.prototype.toString.call(dataToIndexedDB.article));
+    // console.log(Object.prototype.toString.call(dataToIndexedDB.article));
   };
 
   // 選擇渲染 block-level 元素的函數。
@@ -342,10 +342,7 @@ export const InsertUI = () => {
           </button>
 
           {/* 之後記得刪除 "insert" */}
-          <button
-            className="btnlogin"
-            onClick={() => dispatch(cancelUI("insert"))}
-          >
+          <button className="btnlogin" onClick={() => dispatch(cancelUI())}>
             取消
           </button>
         </div>
@@ -413,7 +410,13 @@ const Orderlist = (props) => {
   // console.log("ol :", props);
   return (
     <ol
-      style={{ ...props.style, listStylePosition: "inside" }}
+      style={{
+        ...props.style,
+        listStylePosition: "inside",
+        fontSize: props.element.fontsize
+          ? `${props.element.fontsize}em`
+          : "1em",
+      }}
       {...props.attributes}
     >
       {props.children}

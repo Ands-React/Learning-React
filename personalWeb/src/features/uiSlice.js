@@ -35,7 +35,7 @@ export const uiSlice = createSlice({
     cancelUI: (state) => {
       state.insertUI = !state.insertUI;
       state.operation = "";
-      localStorage.clear();
+      localStorage.removeItem("type");
     },
   },
   extraReducers: (builder) => {
@@ -45,7 +45,7 @@ export const uiSlice = createSlice({
         state.loginUI = !state.loginUI;
       })
       .addCase(setLogin.rejected, (state, action) => {
-        console.log(action.payload);
+        // console.log(action.payload);
         toast.error(
           `${action.payload.status} : ${action.payload.message}`
         );
@@ -91,8 +91,8 @@ export const uiSlice = createSlice({
         state.getLoading = false;
       })
       .addCase(getArticlesByDB.rejected, (state, action) => {
-        console.log(action.payload);
-        console.log(state.getLoading);
+        // console.log(action.payload);
+        // console.log(state.getLoading);
         state.getLoading = false;
         if (!state.insertUI) {
           toast.info(`${action.payload.message}`);

@@ -26,21 +26,24 @@ export const serializes = (node) => {
     //後續有其他style屬性直接寫判斷就好。用switch需要有統一的對象。
     let attrString = "";
     if (n.align) {
-      attrString += `"text-align:${n.align}; "`;
+      attrString += `text-align:${n.align}; `;
     }
-    console.log(attrString)
+    if(n.fontsize){
+      attrString += `font-size:${n.fontsize}; `;
+    }
+    // console.log(attrString)
 
     switch (n.type) {
       case "paragraph":
-        return `<div ${attrString ? `style=${attrString}` : attrString}>${children}</div>`;
+        return `<div ${attrString ? `style="${attrString}"` : attrString}>${children}</div>`;
       case "h1":
-        return `<h1 ${attrString ? `style=${attrString}` : attrString}>${children}</h1>`;
+        return `<h1 ${attrString ? `style="${attrString}"` : attrString}>${children}</h1>`;
       case "h2":
-        return `<h2 ${attrString ? `style=${attrString}` : attrString}>${children}</h2>`;
+        return `<h2 ${attrString ? `style="${attrString}"` : attrString}>${children}</h2>`;
       case "ol":
-        return `<ol ${attrString ? `style=${attrString}` : attrString}>${children}</ol>`;
+        return `<ol ${attrString ? `style="${attrString}"` : attrString}>${children}</ol>`;
       case "ul":
-        return `<ul ${attrString ? `style=${attrString}` : attrString}>${children}</ul>`;
+        return `<ul ${attrString ? `style="${attrString}"` : attrString}>${children}</ul>`;
       case "li":
         return `<li>${children}</li>`;
       default:

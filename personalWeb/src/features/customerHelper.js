@@ -67,20 +67,54 @@ const CustomEditor = {
   },
 
   textIncrease(editor) {
-    const mark = Editor.marks(editor);
-    if (mark?.fontsize && mark.fontsize >= 1) {
-      Editor.addMark(editor, "fontsize", mark.fontsize + 0.2);
+    const [match] = Editor.nodes(editor, {
+      match: (n) => n.type === "ol" || n.type === "ul",
+      mode: "highest",
+    });
+
+    if (match) {
+      Transforms.setNodes(
+        editor,
+        {
+          fontsize: match[0].fontsize > 1 ? match[0].fontsize + 0.2 : 1.2,
+        },
+        {
+          mode: "highest",
+        }
+      );
     } else {
-      Editor.addMark(editor, "fontsize", 1);
+      const mark = Editor.marks(editor);
+      if (mark?.fontsize && mark.fontsize >= 1) {
+        Editor.addMark(editor, "fontsize", mark.fontsize + 0.2);
+      } else {
+        Editor.addMark(editor, "fontsize", 1);
+      }
     }
   },
 
   textDecrease(editor) {
-    const mark = Editor.marks(editor);
-    if (mark?.fontsize && mark.fontsize >= 1) {
-      Editor.addMark(editor, "fontsize", mark.fontsize - 0.2);
-    } else if (mark?.fontsize < 1) {
-      Editor.addMark(editor, "fontsize", 1);
+    const [match] = Editor.nodes(editor, {
+      match: (n) => n.type === "ol" || n.type === "ul",
+      mode: "highest",
+    });
+
+    if (match) {
+      Transforms.setNodes(
+        editor,
+        {
+          fontsize: match[0].fontsize > 1 ? match[0].fontsize - 0.2 : 1,
+        },
+        {
+          mode: "highest",
+        }
+      );
+    } else {
+      const mark = Editor.marks(editor);
+      if (mark?.fontsize && mark.fontsize > 1) {
+        Editor.addMark(editor, "fontsize", mark.fontsize - 0.2);
+      } else if (mark?.fontsize <= 1) {
+        Editor.addMark(editor, "fontsize", 1);
+      }
     }
   },
   setCodeSnippet(editor) {
