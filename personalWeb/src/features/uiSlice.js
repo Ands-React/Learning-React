@@ -35,7 +35,7 @@ export const uiSlice = createSlice({
     cancelUI: (state) => {
       state.insertUI = !state.insertUI;
       state.operation = "";
-      localStorage.clear();
+      localStorage.removeItem("type");
     },
   },
   extraReducers: (builder) => {
@@ -46,17 +46,13 @@ export const uiSlice = createSlice({
       })
       .addCase(setLogin.rejected, (state, action) => {
         console.log(action.payload);
-        toast.error(
-          `${action.payload.status} : ${action.payload.message}`
-        );
+        toast.error(`${action.payload.status} : ${action.payload.message}`);
       })
       .addCase(setLogout.fulfilled, (state, action) => {
         toast.success(action.payload.message);
       })
       .addCase(setLogout.rejected, (state, action) => {
-        toast.error(
-          `${action.payload.status} : ${action.payload.message}`
-        );
+        toast.error(`${action.payload.status} : ${action.payload.message}`);
       })
 
       //響應成功後開啟UI。
@@ -78,9 +74,7 @@ export const uiSlice = createSlice({
       })
       .addCase(checkSession.rejected, (state, action) => {
         if (action.payload.message) {
-          toast.warning(
-            `${action.payload.status} : ${action.payload.message}`
-          );
+          toast.warning(`${action.payload.status} : ${action.payload.message}`);
         }
       })
 
@@ -111,9 +105,7 @@ export const uiSlice = createSlice({
       })
       .addCase(insertArticlesToDB.rejected, (state, action) => {
         state.insertLoading = false;
-        toast.error(
-          `${action.payload.status} : ${action.payload.message}`
-        );
+        toast.error(`${action.payload.status} : ${action.payload.message}`);
       })
 
       .addCase(editArticlesToDB.pending, (state) => {
@@ -128,9 +120,7 @@ export const uiSlice = createSlice({
       })
       .addCase(editArticlesToDB.rejected, (state, action) => {
         state.insertLoading = false;
-        toast.error(
-          `${action.payload.status} : ${action.payload.message}`
-        );
+        toast.error(`${action.payload.status} : ${action.payload.message}`);
       })
 
       .addCase(deleteArticlesFromDB.pending, (state) => {

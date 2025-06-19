@@ -113,15 +113,15 @@ function App() {
 
     const filedata = new FormData();
     filedata.append("image", file, "headshot.png");
-
+    const token = localStorage.getItem("token")
     try {
       const res = await axios.post(
         "https://personalbackend-olip.onrender.com/uploadImg",
         filedata,
         {
-          withCredentials: true,
           headers: {
             "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
           },
         }
       );
