@@ -57,8 +57,9 @@ export const profileSlice = createSlice({
         // console.log(action.payload);
         // console.log("session延長成功");
 
-        if (action.payload.isValid) {
+        if (action.payload.isValid, action.payload.token) {
           state.isLoggedin = action.payload.isValid;
+          localStorage.setItem("token", action.payload.token);
         }
       })
 
