@@ -113,6 +113,7 @@ export const InsertUI = () => {
       return;
     }
     const serializesHTML = serializes(dataToIndexedDB.article);
+    console.log(serializesHTML)
     const idMap = { insert: Date.now(), edit: selectedID };
     const id = idMap[dataToIndexedDB.type];
     const articleData = {
