@@ -7,7 +7,7 @@ export const serializes = (node) => {
       let string = escapeHtml(n.text);
       let style = "";
       if (n.bold) {
-        style += `font-weight:blod; `;
+        style += `font-weight:bold; `;
       }
       if (n.fontsize) {
         style += `font-size:${n.fontsize}; `;
