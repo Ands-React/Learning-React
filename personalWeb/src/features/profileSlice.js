@@ -3,7 +3,7 @@ import { deleteData, insertData } from "./indexedDB";
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://personalbackend-olip.onrender.com", // 替換為你的後端 API 網域
+  baseURL: "https://personalbackend-8b4m.onrender.com", // 替換為你的後端 API 網域
 });
 
 // 攔截器：每次請求自動加上 JWT
@@ -126,7 +126,7 @@ export const setLogin = createAsyncThunk(
   async (data, thunkAPI) => {
     try {
       const response = await axios.post(
-        "https://personalbackend-olip.onrender.com/login",
+        "https://personalbackend-8b4m.onrender.com/login",
         data
       );
       return response.data;
@@ -171,7 +171,7 @@ export const getArticlesByDB = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const response = await axios.post(
-        "https://personalbackend-olip.onrender.com/getArticles"
+        "https://personalbackend-8b4m.onrender.com/getArticles"
       );
       return response.data;
     } catch (err) {
