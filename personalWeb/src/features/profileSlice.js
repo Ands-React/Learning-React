@@ -55,7 +55,7 @@ export const profileSlice = createSlice({
       //檢查session的後端響應
       .addCase(checkSession.fulfilled, (state, action) => {
         // console.log(action.payload);
-        console.log("session延長成功");
+        // console.log("session延長成功");
 
         if (action.payload.isValid) {
           state.isLoggedin = action.payload.isValid;
@@ -64,7 +64,7 @@ export const profileSlice = createSlice({
 
       .addCase(checkSession.rejected, (state, action) => {
         // console.log(action.payload);
-        console.log("session延長失敗");
+        // console.log("session延長失敗");
         state.isLoggedin = action.payload.isValid;
       })
 

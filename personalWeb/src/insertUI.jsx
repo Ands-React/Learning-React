@@ -341,7 +341,6 @@ export const InsertUI = () => {
             儲存退出
           </button>
 
-          {/* 之後記得刪除 "insert" */}
           <button className="btnlogin" onClick={() => dispatch(cancelUI())}>
             取消
           </button>
