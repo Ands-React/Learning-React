@@ -30,7 +30,7 @@ export const serializes = (node) => {
     }
 
     if (n.fontsize) {
-      attrString += `text-align:${n.fontsize}em; `;
+      attrString += `font-size:${n.fontsize}em; `;
     }
     console.log(attrString);
 
