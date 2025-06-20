@@ -113,7 +113,7 @@ export const InsertUI = () => {
       return;
     }
     const serializesHTML = serializes(dataToIndexedDB.article);
-    console.log(serializesHTML)
+    console.log(serializesHTML);
     const idMap = { insert: Date.now(), edit: selectedID };
     const id = idMap[dataToIndexedDB.type];
     const articleData = {
@@ -203,105 +203,149 @@ export const InsertUI = () => {
           onChange={handleEditorChange}
         >
           <div className="insert-features">
-            <span
-              className="material-symbols-rounded"
-              onClick={(event) => {
-                event.preventDefault();
-                CustomEditor.setHeadOne(editor);
-              }}
-            >
-              format_h1
-            </span>
-            <span
-              className="material-symbols-rounded"
-              onClick={(event) => {
-                event.preventDefault();
-                CustomEditor.setHeadTwo(editor);
-              }}
-            >
-              format_h2
-            </span>
-            <span
-              className="material-symbols-rounded"
-              onClick={(event) => {
-                event.preventDefault();
-                CustomEditor.insertOrderList(editor);
-              }}
-            >
-              format_list_numbered
-            </span>
-            <span
-              className="material-symbols-rounded"
-              onClick={(event) => {
-                event.preventDefault();
-                CustomEditor.insertBulletList(editor);
-              }}
-            >
-              format_list_bulleted
-            </span>
-            <span
-              className="material-symbols-rounded"
-              onClick={(event) => {
-                event.preventDefault();
-                CustomEditor.toggleBoldMark(editor);
-              }}
-            >
-              format_bold
-            </span>
-            <span
-              className="material-symbols-rounded"
-              onClick={(event) => {
-                event.preventDefault();
-                CustomEditor.textIncrease(editor);
-              }}
-            >
-              text_increase
-            </span>
-            <span
-              className="material-symbols-rounded"
-              onClick={(event) => {
-                event.preventDefault();
-                CustomEditor.textDecrease(editor);
-              }}
-            >
-              text_decrease
-            </span>
-            <span
-              className="material-symbols-rounded"
-              onClick={(event) => {
-                event.preventDefault();
-                CustomEditor.alignElement(editor, "left");
-              }}
-            >
-              format_align_left
-            </span>
-            <span
-              className="material-symbols-rounded"
-              onClick={(event) => {
-                event.preventDefault();
-                CustomEditor.alignElement(editor, "center");
-              }}
-            >
-              format_align_center
-            </span>
-            <span
-              className="material-symbols-rounded"
-              onClick={(event) => {
-                event.preventDefault();
-                CustomEditor.alignElement(editor, "right");
-              }}
-            >
-              format_align_right
-            </span>
-            <span
-              className="material-symbols-rounded"
-              onClick={(event) => {
-                event.preventDefault();
-                CustomEditor.setCodeSnippet(editor);
-              }}
-            >
-              code
-            </span>
+            <div className="tooltip">
+              <span
+                className="material-symbols-rounded"
+                onClick={(event) => {
+                  event.preventDefault();
+                  CustomEditor.setHeadOne(editor);
+                }}
+              >
+                format_h1
+              </span>
+              <span class="tooltiptext">H1 (Alt + 1)</span>
+            </div>
+
+            <div className="tooltip">
+              <span
+                className="material-symbols-rounded"
+                onClick={(event) => {
+                  event.preventDefault();
+                  CustomEditor.setHeadTwo(editor);
+                }}
+              >
+                format_h2
+              </span>
+              <span class="tooltiptext">H2 (Alt + 2)</span>
+            </div>
+
+            <div className="tooltip">
+              <span
+                className="material-symbols-rounded"
+                onClick={(event) => {
+                  event.preventDefault();
+                  CustomEditor.insertOrderList(editor);
+                }}
+              >
+                format_list_numbered
+              </span>
+              <span class="tooltiptext">有序清單 (Alt + O)</span>
+            </div>
+
+            <div className="tooltip">
+              <span
+                className="material-symbols-rounded"
+                onClick={(event) => {
+                  event.preventDefault();
+                  CustomEditor.insertBulletList(editor);
+                }}
+              >
+                format_list_bulleted
+              </span>
+              <span class="tooltiptext">無序清單 (Alt + U)</span>
+            </div>
+
+            <div className="tooltip">
+              <span
+                className="material-symbols-rounded"
+                onClick={(event) => {
+                  event.preventDefault();
+                  CustomEditor.toggleBoldMark(editor);
+                }}
+              >
+                format_bold
+              </span>
+              <span class="tooltiptext">粗體 (Alt + B)</span>
+            </div>
+
+            <div className="tooltip">
+              <span
+                className="material-symbols-rounded"
+                onClick={(event) => {
+                  event.preventDefault();
+                  CustomEditor.textIncrease(editor);
+                }}
+              >
+                text_increase
+              </span>
+              <span class="tooltiptext">字體增加 (Alt + =)</span>
+            </div>
+
+            <div className="tooltip">
+              <span
+                className="material-symbols-rounded"
+                onClick={(event) => {
+                  event.preventDefault();
+                  CustomEditor.textDecrease(editor);
+                }}
+              >
+                text_decrease
+              </span>
+              <span class="tooltiptext">字體減少 (Alt + -)</span>
+            </div>
+
+            <div className="tooltip">
+              <span
+                className="material-symbols-rounded"
+                onClick={(event) => {
+                  event.preventDefault();
+                  CustomEditor.alignElement(editor, "left");
+                }}
+              >
+                format_align_left
+              </span>
+              <span class="tooltiptext">靠左對齊 (Alt + &lt;)</span>
+            </div>
+
+            <div className="tooltip">
+              <span
+                className="material-symbols-rounded"
+                onClick={(event) => {
+                  event.preventDefault();
+                  CustomEditor.alignElement(editor, "center");
+                }}
+              >
+                format_align_center
+              </span>
+              <span class="tooltiptext">置中 (Alt + /)</span>
+            </div>
+
+            <div className="tooltip">
+              <span
+                className="material-symbols-rounded"
+                onClick={(event) => {
+                  event.preventDefault();
+                  CustomEditor.alignElement(editor, "right");
+                }}
+              >
+                format_align_right
+              </span>
+              <span class="tooltiptext">靠右對齊 (Alt + &gt;)</span>
+            </div>
+
+            <div className="tooltip">
+              <span
+                className="material-symbols-rounded"
+                onClick={(event) => {
+                  event.preventDefault();
+                  CustomEditor.setCodeSnippet(editor);
+                }}
+              >
+                code
+              </span>
+              <span class="tooltiptext">代碼片段(Alt + C)</span>
+            </div>
+
             <input
               type="color"
               value={currentColor}
@@ -327,9 +371,45 @@ export const InsertUI = () => {
                   event.preventDefault();
                   CustomEditor.insertOrderList(editor);
                   break;
-                case "KeyB":
+                case "KeyU":
                   event.preventDefault();
                   CustomEditor.insertBulletList(editor);
+                  break;
+                case "Digit1":
+                  event.preventDefault();
+                  CustomEditor.setHeadOne(editor);
+                  break;
+                case "Digit2":
+                  event.preventDefault();
+                  CustomEditor.setHeadTwo(editor);
+                  break;
+                case "KeyB":
+                  event.preventDefault();
+                  CustomEditor.toggleBoldMark(editor);
+                  break;
+                case "Equal":
+                  event.preventDefault();
+                  CustomEditor.textIncrease(editor);
+                  break;
+                case "Minus":
+                  event.preventDefault();
+                  CustomEditor.textDecrease(editor);
+                  break;
+                case "KeyC":
+                  event.preventDefault();
+                  CustomEditor.setCodeSnippet(editor);
+                  break;
+                case "Comma":
+                  event.preventDefault();
+                  CustomEditor.alignElement(editor, "left");
+                  break;
+                case "Period":
+                  event.preventDefault();
+                  CustomEditor.alignElement(editor, "right");
+                  break;
+                case "Slash":
+                  event.preventDefault();
+                  CustomEditor.alignElement(editor, "center");
                   break;
               }
             }}
@@ -405,7 +485,7 @@ const Codeleaf = (props) => {
 };
 
 const Orderlist = (props) => {
-  // console.log("ol :", props);
+  console.log("ol :", props);
   return (
     <ol
       style={{
@@ -414,6 +494,8 @@ const Orderlist = (props) => {
         fontSize: props.element.fontsize
           ? `${props.element.fontsize}em`
           : "1em",
+        margin: "0",
+        padding: "0",
       }}
       {...props.attributes}
     >
@@ -425,7 +507,12 @@ const Orderlist = (props) => {
 const Bulletlist = (props) => {
   return (
     <ul
-      style={{ ...props.style, listStylePosition: "inside" }}
+      style={{
+        ...props.style,
+        listStylePosition: "inside",
+        margin: "0",
+        padding: "0",
+      }}
       {...props.attributes}
     >
       {props.children}

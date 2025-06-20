@@ -10,7 +10,7 @@ export const serializes = (node) => {
         style += `font-weight:bold; `;
       }
       if (n.fontsize) {
-        style += `font-size:${n.fontsize}; `;
+        style += `font-size:${n.fontsize}em; `;
       }
       if (n.color) {
         style += `color:${n.color}; `;
@@ -26,21 +26,25 @@ export const serializes = (node) => {
     //後續有其他style屬性直接寫判斷就好。用switch需要有統一的對象。
     let attrString = "";
     if (n.align) {
-      attrString += `"text-align:${n.align}; "`;
+      attrString += `text-align:${n.align}; `;
     }
-    console.log(attrString)
+
+    if (n.fontsize) {
+      attrString += `text-align:${n.fontsize}em; `;
+    }
+    console.log(attrString);
 
     switch (n.type) {
       case "paragraph":
-        return `<div ${attrString ? `style=${attrString}` : attrString}>${children}</div>`;
+        return `<div class="unifiedStyle" ${attrString && `style=${attrString}`}}>${children}</div>`;
       case "h1":
-        return `<h1 ${attrString ? `style=${attrString}` : attrString}>${children}</h1>`;
+        return `<h1 class="unifiedStyle" ${attrString && `style=${attrString}`}}>${children}</h1>`;
       case "h2":
-        return `<h2 ${attrString ? `style=${attrString}` : attrString}>${children}</h2>`;
+        return `<h2 class="unifiedStyle" ${attrString && `style=${attrString}`}}>${children}</h2>`;
       case "ol":
-        return `<ol ${attrString ? `style=${attrString}` : attrString}>${children}</ol>`;
+        return `<ol class="unifiedList" ${attrString && `style=${attrString}`}}>${children}</ol>`;
       case "ul":
-        return `<ul ${attrString ? `style=${attrString}` : attrString}>${children}</ul>`;
+        return `<ul class="unifiedList" ${attrString && `style=${attrString}`}}>${children}</ul>`;
       case "li":
         return `<li>${children}</li>`;
       default:
