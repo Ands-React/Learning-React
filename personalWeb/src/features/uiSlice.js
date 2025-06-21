@@ -106,7 +106,7 @@ export const uiSlice = createSlice({
         state.insertUI = false;
         state.operation = "";
         state.insertLoading = false;
-        localStorage.clear();
+        localStorage.removeItem("type");
         toast.success(action.payload.message);
       })
       .addCase(insertArticlesToDB.rejected, (state, action) => {
@@ -123,7 +123,7 @@ export const uiSlice = createSlice({
         state.insertUI = false;
         state.operation = "";
         state.insertLoading = false;
-        localStorage.clear();
+        localStorage.removeItem("type");
         toast.success(action.payload.message);
       })
       .addCase(editArticlesToDB.rejected, (state, action) => {

@@ -52,13 +52,17 @@ export const profileSlice = createSlice({
         localStorage.clear();
       })
 
+      .addCase(setLogout.rejected, (state, action) => {
+        state.isLoggedin = action.payload.isValid;
+        localStorage.clear();
+      })
+
       //檢查session的後端響應
       .addCase(checkSession.fulfilled, (state, action) => {
         // console.log(action.payload);
         // console.log("session延長成功");
 
-        if (action.payload.isValid && action.payload.token) {
-          state.isLoggedin = action.payload.isValid;
+        if (action.payload.token) {
           localStorage.setItem("token", action.payload.token);
         }
       })

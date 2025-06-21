@@ -14,6 +14,8 @@ import { insertData, getData } from "./features/indexedDB";
 import { serializes } from "./features/serialize";
 
 export const InsertUI = () => {
+  const arrowCodes = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
+  const removeMark = ["color", "bold", "type"];
   const initialValue = [
     {
       type: "paragraph",
@@ -49,7 +51,7 @@ export const InsertUI = () => {
   useEffect(() => {
     const rolling = setInterval(() => {
       dispatch(checkSession("insert"));
-    }, 1000 * 60 * 5);
+    }, 1000 * 60 * 10);
 
     return () => {
       clearInterval(rolling);
@@ -214,7 +216,7 @@ export const InsertUI = () => {
               >
                 format_h1
               </span>
-              <span class="tooltiptext">H1 (Alt + 1)</span>
+              <span className="tooltiptext">H1 (Alt + 1)</span>
             </div>
 
             <div className="tooltip">
@@ -227,7 +229,7 @@ export const InsertUI = () => {
               >
                 format_h2
               </span>
-              <span class="tooltiptext">H2 (Alt + 2)</span>
+              <span className="tooltiptext">H2 (Alt + 2)</span>
             </div>
 
             <div className="tooltip">
@@ -240,7 +242,7 @@ export const InsertUI = () => {
               >
                 format_list_numbered
               </span>
-              <span class="tooltiptext">有序清單 (Alt + O)</span>
+              <span className="tooltiptext">有序清單 (Alt + O)</span>
             </div>
 
             <div className="tooltip">
@@ -253,7 +255,7 @@ export const InsertUI = () => {
               >
                 format_list_bulleted
               </span>
-              <span class="tooltiptext">無序清單 (Alt + U)</span>
+              <span className="tooltiptext">無序清單 (Alt + U)</span>
             </div>
 
             <div className="tooltip">
@@ -266,7 +268,7 @@ export const InsertUI = () => {
               >
                 format_bold
               </span>
-              <span class="tooltiptext">粗體 (Alt + B)</span>
+              <span className="tooltiptext">粗體 (Alt + B)</span>
             </div>
 
             <div className="tooltip">
@@ -279,7 +281,7 @@ export const InsertUI = () => {
               >
                 text_increase
               </span>
-              <span class="tooltiptext">字體增加 (Alt + =)</span>
+              <span className="tooltiptext">字體增加 (Alt + =)</span>
             </div>
 
             <div className="tooltip">
@@ -292,7 +294,7 @@ export const InsertUI = () => {
               >
                 text_decrease
               </span>
-              <span class="tooltiptext">字體減少 (Alt + -)</span>
+              <span className="tooltiptext">字體減少 (Alt + -)</span>
             </div>
 
             <div className="tooltip">
@@ -305,7 +307,7 @@ export const InsertUI = () => {
               >
                 format_align_left
               </span>
-              <span class="tooltiptext">靠左對齊 (Alt + &lt;)</span>
+              <span className="tooltiptext">靠左對齊 (Alt + &lt;)</span>
             </div>
 
             <div className="tooltip">
@@ -318,7 +320,7 @@ export const InsertUI = () => {
               >
                 format_align_center
               </span>
-              <span class="tooltiptext">置中 (Alt + /)</span>
+              <span className="tooltiptext">置中 (Alt + /)</span>
             </div>
 
             <div className="tooltip">
@@ -331,7 +333,7 @@ export const InsertUI = () => {
               >
                 format_align_right
               </span>
-              <span class="tooltiptext">靠右對齊 (Alt + &gt;)</span>
+              <span className="tooltiptext">靠右對齊 (Alt + &gt;)</span>
             </div>
 
             <div className="tooltip">
@@ -344,7 +346,7 @@ export const InsertUI = () => {
               >
                 code
               </span>
-              <span class="tooltiptext">代碼片段(Alt + C)</span>
+              <span className="tooltiptext">代碼片段(Alt + C)</span>
             </div>
             <input
               type="color"
@@ -362,7 +364,15 @@ export const InsertUI = () => {
             renderLeaf={renderLeaf}
             renderPlaceholder={renderPlaceholder}
             onKeyDown={(event) => {
-              if (!event.altKey) return;
+              if (arrowCodes.includes(event.code)) return;
+
+              if (!event.altKey) {
+                Editor.removeMark(editor, "color");
+                Editor.removeMark(editor, "type");
+                Editor.removeMark(editor, "bold");
+                return;
+              }
+
               switch (event.code) {
                 case "KeyO":
                   event.preventDefault();
