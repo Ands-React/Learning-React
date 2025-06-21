@@ -362,11 +362,6 @@ export const InsertUI = () => {
             renderLeaf={renderLeaf}
             renderPlaceholder={renderPlaceholder}
             onKeyDown={(event) => {
-              const removeMark = ["type", "color", "bold"];
-              for (const element of removeMark) {
-                editor.removeMark(editor, element);
-              }
-
               if (!event.altKey) return;
               switch (event.code) {
                 case "KeyO":
@@ -496,6 +491,8 @@ const Orderlist = (props) => {
         fontSize: props.element.fontsize
           ? `${props.element.fontsize}em`
           : "1em",
+        margin: "0px",
+        padding: "0px",
       }}
       {...props.attributes}
     >
@@ -507,7 +504,15 @@ const Orderlist = (props) => {
 const Bulletlist = (props) => {
   return (
     <ul
-      style={{ ...props.style, listStylePosition: "inside" }}
+      style={{
+        ...props.style,
+        listStylePosition: "inside",
+        fontSize: props.element.fontsize
+          ? `${props.element.fontsize}em`
+          : "1em",
+        margin: "0px",
+        padding: "0px",
+      }}
       {...props.attributes}
     >
       {props.children}
