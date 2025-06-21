@@ -362,9 +362,11 @@ export const InsertUI = () => {
             renderLeaf={renderLeaf}
             renderPlaceholder={renderPlaceholder}
             onKeyDown={(event) => {
-              if (Editor.marks(editor)?.type === "code") {
-                Editor.removeMark(editor, "type");
+              const removeMark = ['type', 'color', 'bold']
+              for(const element of removeMark ) {
+                editor.removeMark(editor,element)
               }
+
               if (!event.altKey) return;
               switch (event.code) {
                 case "KeyO":
