@@ -15,7 +15,6 @@ import { serializes } from "./features/serialize";
 
 export const InsertUI = () => {
   const arrowCodes = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
-  const removeMark = ["color", "bold", "type"];
   const initialValue = [
     {
       type: "paragraph",
