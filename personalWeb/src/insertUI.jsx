@@ -319,18 +319,56 @@ export const InsertUI = () => {
             renderLeaf={renderLeaf}
             renderPlaceholder={renderPlaceholder}
             onKeyDown={(event) => {
-              if (Editor.marks(editor)?.type === "code") {
-                Editor.removeMark(editor, "type");
+              const removeMark = ['type', 'color', 'bold']
+              for(const element of removeMark ) {
+                editor.removeMark(editor,element)
               }
+
               if (!event.altKey) return;
               switch (event.code) {
                 case "KeyO":
                   event.preventDefault();
                   CustomEditor.insertOrderList(editor);
                   break;
-                case "KeyB":
+                case "KeyU":
                   event.preventDefault();
                   CustomEditor.insertBulletList(editor);
+                  break;
+                case "Digit1":
+                  event.preventDefault();
+                  CustomEditor.setHeadOne(editor);
+                  break;
+                case "Digit2":
+                  event.preventDefault();
+                  CustomEditor.setHeadTwo(editor);
+                  break;
+                case "KeyB":
+                  event.preventDefault();
+                  CustomEditor.toggleBoldMark(editor);
+                  break;
+                case "Equal":
+                  event.preventDefault();
+                  CustomEditor.textIncrease(editor);
+                  break;
+                case "Minus":
+                  event.preventDefault();
+                  CustomEditor.textDecrease(editor);
+                  break;
+                case "KeyC":
+                  event.preventDefault();
+                  CustomEditor.setCodeSnippet(editor);
+                  break;
+                case "Comma":
+                  event.preventDefault();
+                  CustomEditor.alignElement(editor, "left");
+                  break;
+                case "Period":
+                  event.preventDefault();
+                  CustomEditor.alignElement(editor, "right");
+                  break;
+                case "Slash":
+                  event.preventDefault();
+                  CustomEditor.alignElement(editor, "center");
                   break;
               }
             }}
