@@ -209,7 +209,7 @@ export const InsertUI = () => {
             <div className="tooltip">
               <span
                 className="material-symbols-rounded"
-                onClick={(event) => {
+                onMouseDown={(event) => {
                   event.preventDefault();
                   CustomEditor.setHeadOne(editor);
                 }}
@@ -222,7 +222,7 @@ export const InsertUI = () => {
             <div className="tooltip">
               <span
                 className="material-symbols-rounded"
-                onClick={(event) => {
+                onMouseDown={(event) => {
                   event.preventDefault();
                   CustomEditor.setHeadTwo(editor);
                 }}
@@ -235,7 +235,7 @@ export const InsertUI = () => {
             <div className="tooltip">
               <span
                 className="material-symbols-rounded"
-                onClick={(event) => {
+                onMouseDown={(event) => {
                   event.preventDefault();
                   CustomEditor.insertOrderList(editor);
                 }}
@@ -248,7 +248,7 @@ export const InsertUI = () => {
             <div className="tooltip">
               <span
                 className="material-symbols-rounded"
-                onClick={(event) => {
+                onMouseDown={(event) => {
                   event.preventDefault();
                   CustomEditor.insertBulletList(editor);
                 }}
@@ -261,7 +261,7 @@ export const InsertUI = () => {
             <div className="tooltip">
               <span
                 className="material-symbols-rounded"
-                onClick={(event) => {
+                onMouseDown={(event) => {
                   event.preventDefault();
                   CustomEditor.toggleBoldMark(editor);
                 }}
@@ -274,7 +274,7 @@ export const InsertUI = () => {
             <div className="tooltip">
               <span
                 className="material-symbols-rounded"
-                onClick={(event) => {
+                onMouseDown={(event) => {
                   event.preventDefault();
                   CustomEditor.textIncrease(editor);
                 }}
@@ -287,7 +287,7 @@ export const InsertUI = () => {
             <div className="tooltip">
               <span
                 className="material-symbols-rounded"
-                onClick={(event) => {
+                onMouseDown={(event) => {
                   event.preventDefault();
                   CustomEditor.textDecrease(editor);
                 }}
@@ -300,7 +300,7 @@ export const InsertUI = () => {
             <div className="tooltip">
               <span
                 className="material-symbols-rounded"
-                onClick={(event) => {
+                onMouseDown={(event) => {
                   event.preventDefault();
                   CustomEditor.alignElement(editor, "left");
                 }}
@@ -313,7 +313,7 @@ export const InsertUI = () => {
             <div className="tooltip">
               <span
                 className="material-symbols-rounded"
-                onClick={(event) => {
+                onMouseDown={(event) => {
                   event.preventDefault();
                   CustomEditor.alignElement(editor, "center");
                 }}
@@ -326,7 +326,7 @@ export const InsertUI = () => {
             <div className="tooltip">
               <span
                 className="material-symbols-rounded"
-                onClick={(event) => {
+                onMouseDown={(event) => {
                   event.preventDefault();
                   CustomEditor.alignElement(editor, "right");
                 }}
@@ -339,7 +339,7 @@ export const InsertUI = () => {
             <div className="tooltip">
               <span
                 className="material-symbols-rounded"
-                onClick={(event) => {
+                onMouseDown={(event) => {
                   event.preventDefault();
                   CustomEditor.setCodeSnippet(editor);
                 }}

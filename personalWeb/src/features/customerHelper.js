@@ -36,6 +36,7 @@ const CustomEditor = {
 
   toggleBoldMark(editor) {
     const isActive = CustomEditor.isBoldMarkActive(editor);
+
     if (isActive) {
       Editor.removeMark(editor, "bold");
     } else {

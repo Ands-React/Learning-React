@@ -57,7 +57,7 @@ function App() {
     let imgURL;
     const getImg = async () => {
       try {
-        const res = await axios.get("https://personalbackend-8b4m.onrender.com/getImg", {
+        const res = await axios.get("http://localhost:3000/getImg", {
           responseType: "arraybuffer",
         });
         const blob = new Blob([res.data], { type: "image/png" });
@@ -116,7 +116,7 @@ function App() {
     const token = localStorage.getItem("token")
     try {
       const res = await axios.post(
-        "https://personalbackend-8b4m.onrender.com/uploadImg",
+        "http://localhost:3000/uploadImg",
         filedata,
         {
           headers: {
