@@ -60,7 +60,7 @@ const CustomEditor = {
       editor,
       { align: alignType },
       {
-        match: (n) => Element.isElement(n) && Editor.isBlock(editor),
+        match: (n) => Element.isElement(n) && Editor.isBlock(editor, n),
         mode: isActive ? "highest" : "lowest",
       }
     );
@@ -133,7 +133,7 @@ const CustomEditor = {
     Transforms.setNodes(
       editor,
       { type: match ? null : "h1" },
-      { match: (n) => Element.isElement(n) && Editor.isBlock(editor) }
+      { match: (n) => Element.isElement(n) && Editor.isBlock(editor, n) }
     );
     CustomEditor.unwrapList(editor);
   },
@@ -145,7 +145,7 @@ const CustomEditor = {
     Transforms.setNodes(
       editor,
       { type: match ? null : "h2" },
-      { match: (n) => Element.isElement(n) && Editor.isBlock(editor) }
+      { match: (n) => Element.isElement(n) && Editor.isBlock(editor, n) }
     );
     CustomEditor.unwrapList(editor);
   },
@@ -157,7 +157,7 @@ const CustomEditor = {
     Transforms.setNodes(
       editor,
       { type: isActive ? null : "li" },
-      { match: (n) => Element.isElement(n) && Editor.isBlock(editor) }
+      { match: (n) => Element.isElement(n) && Editor.isBlock(editor, n) }
     );
     if (isActive) {
       CustomEditor.unwrapList(editor);
@@ -173,7 +173,7 @@ const CustomEditor = {
     Transforms.setNodes(
       editor,
       { type: isActive ? null : "li" },
-      { match: (n) => Element.isElement(n) && Editor.isBlock(editor) }
+      { match: (n) => Element.isElement(n) && Editor.isBlock(editor, n) }
     );
     if (isActive) {
       CustomEditor.unwrapList(editor);
