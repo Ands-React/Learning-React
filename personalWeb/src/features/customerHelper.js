@@ -31,7 +31,7 @@ const CustomEditor = {
       match: (n) => n.type === type,
     });
 
-    return match;
+    return !!match;
   },
 
   toggleBoldMark(editor) {
@@ -61,7 +61,7 @@ const CustomEditor = {
       { align: alignType },
       {
         match: (n) => Element.isElement(n) && Editor.isBlock(editor),
-        mode: isActive ? "highest" : "all",
+        mode: isActive ? "highest" : "lowest",
       }
     );
   },

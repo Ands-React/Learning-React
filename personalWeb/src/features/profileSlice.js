@@ -65,6 +65,10 @@ export const profileSlice = createSlice({
         if (action.payload.token) {
           localStorage.setItem("token", action.payload.token);
         }
+
+        if (action.payload.isValid) {
+          state.isLoggedin = action.payload.isValid;
+        }
       })
 
       .addCase(checkSession.rejected, (state, action) => {
@@ -130,10 +134,7 @@ export const setLogin = createAsyncThunk(
   "profile/login",
   async (data, thunkAPI) => {
     try {
-      const response = await axios.post(
-        "https://personalbackend-8b4m.onrender.com/login",
-        data
-      );
+      const response = await axios.post("https://personalbackend-8b4m.onrender.com/login", data);
       return response.data;
     } catch (err) {
       console.log(err);
@@ -175,9 +176,7 @@ export const getArticlesByDB = createAsyncThunk(
   "profile/getArticlesByDB",
   async (_, thunkAPI) => {
     try {
-      const response = await axios.post(
-        "https://personalbackend-8b4m.onrender.com/getArticles"
-      );
+      const response = await axios.post("https://personalbackend-8b4m.onrender.com/getArticles");
       return response.data;
     } catch (err) {
       return thunkAPI.rejectWithValue({

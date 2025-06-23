@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useRef } from "react";
+import React, { useEffect, useState, useCallback, memo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   checkSession,
@@ -13,14 +13,15 @@ import CustomEditor from "./features/customerHelper";
 import { insertData, getData } from "./features/indexedDB";
 import { serializes } from "./features/serialize";
 
+const initialValue = [
+  {
+    type: "paragraph",
+    children: [{ text: "" }],
+  },
+];
+
 export const InsertUI = () => {
   const arrowCodes = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
-  const initialValue = [
-    {
-      type: "paragraph",
-      children: [{ text: "" }],
-    },
-  ];
 
   const operation = useSelector((state) => state.ui.operation);
   const light = useSelector((state) => state.ui.light);
