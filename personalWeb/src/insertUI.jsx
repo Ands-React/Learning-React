@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, memo } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   checkSession,
@@ -7,11 +7,20 @@ import {
 } from "./features/profileSlice";
 import { cancelUI } from "./features/uiSlice";
 import { createEditor, Editor, Node } from "slate";
-import { Slate, Editable, withReact } from "slate-react";
+import {
+  Slate,
+  Editable,
+  withReact,
+  ReactEditor,
+  useSlateStatic,
+  useFocused,
+  useSelected,
+} from "slate-react";
 import { withHistory } from "slate-history";
 import CustomEditor from "./features/customerHelper";
 import { insertData, getData } from "./features/indexedDB";
 import { serializes } from "./features/serialize";
+import { AddLink } from "./addlink";
 
 const initialValue = [
   {
@@ -19,6 +28,14 @@ const initialValue = [
     children: [{ text: "" }],
   },
 ];
+
+const withLinks = (editor) => {
+  const { isInline } = editor;
+  editor.isInline = (element) => {
+    return element.type === "link" ? true : isInline(element);
+  };
+  return editor;
+};
 
 export const InsertUI = () => {
   const arrowCodes = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
@@ -30,13 +47,16 @@ export const InsertUI = () => {
   const selectedID = useSelector((state) => state.profile.selectedID);
   const dispatch = useDispatch();
 
-  const [editor] = useState(() => withReact(withHistory(createEditor())));
+  const [editor] = useState(() =>
+    withLinks(withHistory(withReact(createEditor())))
+  );
   const [currentColor, setCurrentColor] = useState("#000000");
   const [editorKey, setEditorKey] = useState(0); // 強制讓slate重新渲染初始值
   const [dataToIndexedDB, setDataToIndexedDB] = useState({
     type: operation,
     isShow: true,
   });
+  const [showLink, setShowLink] = useState(false);
 
   //每次插入到indexedDB的都是字串化的JSON
   if (dataToIndexedDB.title || dataToIndexedDB.article) {
@@ -84,9 +104,13 @@ export const InsertUI = () => {
     }
   }, []);
 
+  useEffect(() => {
+    ReactEditor.focus(editor);
+  }, [editor]);
+
   const handleEditorChange = (newValue) => {
     // 從 editor 取得目前選區的 marks
-    // console.log("slate內容 :", newValue);
+    console.log("slate內容 :", newValue);
     const marks = Editor.marks(editor);
     const isAstChange = editor.operations.some(
       (op) => "set_selection" !== op.type
@@ -156,6 +180,8 @@ export const InsertUI = () => {
         return <Bulletlist style={style} {...props} />;
       case "li":
         return <ListElement {...props} />;
+      case "link":
+        return <Link {...props} />;
       default:
         return <DefaultElement style={style} {...props} />;
     }
@@ -348,6 +374,19 @@ export const InsertUI = () => {
               </span>
               <span className="tooltiptext">代碼片段(Alt + C)</span>
             </div>
+
+            <div className="tooltip">
+              <span
+                className="material-symbols-rounded"
+                onMouseDown={(event) => {
+                  event.preventDefault();
+                  setShowLink(true);
+                }}
+              >
+                add_link
+              </span>
+              <span className="tooltiptext">插入連結(Alt + L)</span>
+            </div>
             <input
               type="color"
               value={currentColor}
@@ -418,6 +457,10 @@ export const InsertUI = () => {
                   event.preventDefault();
                   CustomEditor.alignElement(editor, "center");
                   break;
+                case "KeyL":
+                  event.preventDefault();
+                  setShowLink(true);
+                  break;
               }
             }}
           />
@@ -432,6 +475,13 @@ export const InsertUI = () => {
           </button>
         </div>
       </form>
+      {showLink && (
+        <AddLink
+          editor={editor}
+          addlink={(editor, url) => CustomEditor.addLink(editor, url)}
+          setShowLink={setShowLink}
+        />
+      )}
       {insertLoading && <div className="spinner" />}
     </>
   );
@@ -476,8 +526,8 @@ const Leaf = (props) => {
     <span
       {...props.attributes}
       style={{
-        color: props.leaf.color || "#000000",
-        fontWeight: props.leaf.bold ? "bold" : "normal",
+        color: props.leaf?.color,
+        fontWeight: props.leaf.bold ? "bold" : undefined,
         fontSize: props.leaf.fontsize > 1 ? `${props.leaf.fontsize}em` : "1em",
       }}
     >
@@ -533,4 +583,33 @@ const Bulletlist = (props) => {
 const ListElement = (props) => {
   // console.log("li :", props);
   return <li {...props.attributes}>{props.children}</li>;
+};
+
+const Link = (props) => {
+  console.log(props);
+  const editor = useSlateStatic();
+  const selected = useSelected();
+  const focused = useFocused();
+
+  return (
+    <span className="element-link">
+      <a {...props.attributes} href={props.element.url}>
+        {props.children}
+      </a>
+      {selected && focused && (
+        <div className="popup" contentEditable={false}>
+          <a href={props.element.url} rel="noreferrer" target="_blank">
+            {props.element.url}
+          </a>
+
+          <span
+            className="material-symbols-rounded"
+            onClick={() => CustomEditor.unwrapList(editor)}
+          >
+            link_off
+          </span>
+        </div>
+      )}
+    </span>
+  );
 };

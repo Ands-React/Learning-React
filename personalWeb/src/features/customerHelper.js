@@ -1,7 +1,7 @@
 // 該 JS 主要是富文本編輯器的功能，
 // 對於 node 和 leaf 的操作 (例如 : bold, align, code等)
-import { Editor, Transforms, Element } from "slate";
-
+import { Editor, Transforms, Element, Range } from "slate";
+import { ReactEditor } from "slate-react";
 const CustomEditor = {
   // 獲取當前選中的 block。
   // currentSelectedBlock(editor) {
@@ -16,8 +16,11 @@ const CustomEditor = {
 
   unwrapList(editor) {
     Transforms.unwrapNodes(editor, {
-      match: (n) => n.type === "ol" || n.type === "ul",
-      split: true, // 確保只解除當前選中的節點，不影響其他清單
+      match: (n) =>
+        !Editor.isEditor(n) &&
+        Element.isElement(n) &&
+        (n.type === "link" || n.type === "ol" || n.type === "ul"),
+      split: true,
     });
   },
 
@@ -28,7 +31,8 @@ const CustomEditor = {
 
   isBlockActive(editor, type) {
     const [match] = Editor.nodes(editor, {
-      match: (n) => n.type === type,
+      match: (n) =>
+        !Editor.isEditor(n) && Element.isElement(n) && n.type === type,
     });
 
     return !!match;
@@ -184,6 +188,22 @@ const CustomEditor = {
   },
   changeTextColor(editor, color) {
     Editor.addMark(editor, "color", color);
+  },
+
+  addLink(editor, url) {
+    const { selection } = editor;
+    if (!selection) return;
+    ReactEditor.focus(editor);
+    if (Range.isCollapsed(selection)) {
+      Transforms.insertNodes(editor, {
+        type: "link",
+        url,
+        children: [{ text: "Link" }],
+      });
+    } else {
+      Transforms.wrapNodes(editor, { type: "link", url }, { split: true });
+      Transforms.collapse(editor, { edge: "end" });
+    }
   },
 };
 
