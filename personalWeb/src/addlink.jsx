@@ -42,7 +42,8 @@ export const AddLink = memo(({ addlink, setShowLink }) => {
           onChange={(e) => setUrl(e.target.value)}
           onKeyDown={(e) => {
             if (e.code === "Enter") {
-              handleSubmit;
+              e.preventDefault();
+              handleSubmit();
             }
           }}
           autoFocus

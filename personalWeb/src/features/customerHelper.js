@@ -191,9 +191,10 @@ const CustomEditor = {
 
   addLink(editor, url) {
     const { selection } = editor;
+    if (!selection) return;
+    
     CustomEditor.unwrapList(editor);
-
-    if (!selection || Range.isCollapsed(selection)) {
+    if (Range.isCollapsed(selection)) {
       const linkNode = {
         type: "link",
         url,
