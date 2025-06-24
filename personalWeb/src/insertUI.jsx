@@ -21,7 +21,7 @@ const initialValue = [
 ];
 
 export const InsertUI = () => {
-  const arrowCodes = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
+  const ignoreKeyCodes = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "End"];
 
   const operation = useSelector((state) => state.ui.operation);
   const light = useSelector((state) => state.ui.light);
@@ -368,7 +368,7 @@ export const InsertUI = () => {
             renderLeaf={renderLeaf}
             renderPlaceholder={renderPlaceholder}
             onKeyDown={(event) => {
-              if (arrowCodes.includes(event.code)) return;
+              if (ignoreKeyCodes.includes(event.code)) return;
 
               if (!event.altKey) {
                 Editor.removeMark(editor, "color");
