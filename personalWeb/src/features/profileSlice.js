@@ -104,7 +104,7 @@ export const profileSlice = createSlice({
       })
 
       .addCase(deleteArticlesFromDB.fulfilled, (state, action) => {
-        console.log(action.payload);
+        // console.log(action.payload);
         console.log("從資料庫成功刪除文章");
         state.articleOrder = state.articleOrder.filter(
           (id) => id !== action.payload.selectedID

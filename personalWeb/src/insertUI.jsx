@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, memo } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   checkSession,
@@ -7,11 +7,20 @@ import {
 } from "./features/profileSlice";
 import { cancelUI } from "./features/uiSlice";
 import { createEditor, Editor, Node } from "slate";
-import { Slate, Editable, withReact, ReactEditor } from "slate-react";
+import {
+  Slate,
+  Editable,
+  withReact,
+  ReactEditor,
+  useSlateStatic,
+  useFocused,
+  useSelected,
+} from "slate-react";
 import { withHistory } from "slate-history";
 import CustomEditor from "./features/customerHelper";
 import { insertData, getData } from "./features/indexedDB";
 import { serializes } from "./features/serialize";
+import { AddLink } from "./addlink";
 
 const initialValue = [
   {
@@ -20,8 +29,16 @@ const initialValue = [
   },
 ];
 
+const withLinks = (editor) => {
+  const { isInline } = editor;
+  editor.isInline = (element) => {
+    return element.type === "link" ? true : isInline(element);
+  };
+  return editor;
+};
+
 export const InsertUI = () => {
-  const ignoreKeyCodes = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "End"];
+  const arrowCodes = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "End"];
 
   const operation = useSelector((state) => state.ui.operation);
   const light = useSelector((state) => state.ui.light);
@@ -30,13 +47,17 @@ export const InsertUI = () => {
   const selectedID = useSelector((state) => state.profile.selectedID);
   const dispatch = useDispatch();
 
-  const [editor] = useState(() => withReact(withHistory(createEditor())));
+  const [editor] = useState(() =>
+    withReact(withLinks(withHistory(createEditor())))
+  );
+
   const [currentColor, setCurrentColor] = useState("#000000");
   const [editorKey, setEditorKey] = useState(0); // 強制讓slate重新渲染初始值
   const [dataToIndexedDB, setDataToIndexedDB] = useState({
     type: operation,
     isShow: true,
   });
+  const [showLink, setShowLink] = useState(false);
 
   //每次插入到indexedDB的都是字串化的JSON
   if (dataToIndexedDB.title || dataToIndexedDB.article) {
@@ -121,6 +142,7 @@ export const InsertUI = () => {
       return;
     }
     const serializesHTML = serializes(dataToIndexedDB.article);
+    // console.log(serializesHTML)
     const idMap = { insert: Date.now(), edit: selectedID };
     const id = idMap[dataToIndexedDB.type];
     const articleData = {
@@ -137,12 +159,18 @@ export const InsertUI = () => {
     if (dataToIndexedDB.type === "insert") {
       dispatch(insertArticlesToDB(articleData));
     } else if (dataToIndexedDB.type === "edit") {
-      console.log("將遠端資料庫更新", articleData);
+      // console.log("將遠端資料庫更新", articleData);
       dispatch(editArticlesToDB(articleData));
     }
 
     // console.log(Object.prototype.toString.call(dataToIndexedDB.article));
   };
+
+  const handleAddLink = useCallback(
+    (url) => CustomEditor.addLink(editor, url),
+
+    [editor]
+  );
 
   // 選擇渲染 block-level 元素的函數。
   const renderElement = useCallback((props) => {
@@ -160,6 +188,8 @@ export const InsertUI = () => {
         return <Bulletlist style={style} {...props} />;
       case "li":
         return <ListElement {...props} />;
+      case "link":
+        return <Link {...props} />;
       default:
         return <DefaultElement style={style} {...props} />;
     }
@@ -352,6 +382,19 @@ export const InsertUI = () => {
               </span>
               <span className="tooltiptext">代碼片段(Alt + C)</span>
             </div>
+
+            <div className="tooltip">
+              <span
+                className="material-symbols-rounded"
+                onMouseDown={(event) => {
+                  event.preventDefault();
+                  setShowLink(true);
+                }}
+              >
+                add_link
+              </span>
+              <span className="tooltiptext">插入連結(Alt + L)</span>
+            </div>
             <input
               type="color"
               value={currentColor}
@@ -368,8 +411,16 @@ export const InsertUI = () => {
             renderLeaf={renderLeaf}
             renderPlaceholder={renderPlaceholder}
             onKeyDown={(event) => {
-              if (ignoreKeyCodes.includes(event.code)) return;
-
+              if (arrowCodes.includes(event.code)) return;
+              if (event.code === "Backspace") {
+                const [linkEntry] = Editor.nodes(editor, {
+                  match: (n) => n.type === "link",
+                  mode: "lowest",
+                });
+                if (linkEntry) {
+                  CustomEditor.unwrapList(editor);
+                }
+              }
               if (!event.altKey) {
                 Editor.removeMark(editor, "color");
                 Editor.removeMark(editor, "type");
@@ -422,6 +473,10 @@ export const InsertUI = () => {
                   event.preventDefault();
                   CustomEditor.alignElement(editor, "center");
                   break;
+                case "KeyL":
+                  event.preventDefault();
+                  setShowLink(true);
+                  break;
               }
             }}
           />
@@ -436,6 +491,9 @@ export const InsertUI = () => {
           </button>
         </div>
       </form>
+      {showLink && (
+        <AddLink addlink={handleAddLink} setShowLink={setShowLink} />
+      )}
       {insertLoading && <div className="spinner" />}
     </>
   );
@@ -537,4 +595,33 @@ const Bulletlist = (props) => {
 const ListElement = (props) => {
   // console.log("li :", props);
   return <li {...props.attributes}>{props.children}</li>;
+};
+
+const Link = (props) => {
+  // console.log(props);
+  const editor = useSlateStatic();
+  const selected = useSelected();
+  const focused = useFocused();
+
+  return (
+    <div className="element-link">
+      <a {...props.attributes} href={props.element.url}>
+        {props.children}
+      </a>
+      {selected && focused && (
+        <div className="popup" contentEditable={false}>
+          <a href={props.element.url} rel="noopener noreferrer" target="_blank">
+            {props.element.url}
+          </a>
+
+          <span
+            className="material-symbols-rounded"
+            onClick={() => CustomEditor.unwrapList(editor)}
+          >
+            link_off
+          </span>
+        </div>
+      )}
+    </div>
+  );
 };

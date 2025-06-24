@@ -489,6 +489,46 @@ code {
   transform: translate(-50%, -50%);
 }
 
+.prompt {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100dvw;
+  height: 100dvh;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.prompt-windows {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 200px;
+  height: 100px;
+  gap: 5px;
+  border: 1px solid black;
+  border-radius: 15px;
+  background-color: white;
+}
+.element-link {
+  display: inline;
+  position: relative;
+}
+
+.element-link .popup {
+  position: absolute;
+  left: 0;
+  display: flex;
+  align-items: center;
+  background-color: white;
+  padding: 5px;
+  gap: 10px;
+  border-radius: 6px;
+  border: 1px solid lightgray;
+}
 @keyframes spin {
   0% {
     transform: rotate(0deg);
