@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, memo } from "react";
+import { useEffect, useState, useCallback, memo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   checkSession,
@@ -6,7 +6,7 @@ import {
   editArticlesToDB,
 } from "./features/profileSlice";
 import { cancelUI } from "./features/uiSlice";
-import { createEditor, Editor, Node } from "slate";
+import { createEditor, Editor, Node, ReactEditor } from "slate";
 import { Slate, Editable, withReact } from "slate-react";
 import { withHistory } from "slate-history";
 import CustomEditor from "./features/customerHelper";
@@ -83,6 +83,10 @@ export const InsertUI = () => {
       load(dataToIndexedDB.type);
     }
   }, []);
+
+  useEffect(() => {
+    ReactEditor.focus(editor);
+  }, [editor]);
 
   const handleEditorChange = (newValue) => {
     // 從 editor 取得目前選區的 marks
@@ -476,8 +480,8 @@ const Leaf = (props) => {
     <span
       {...props.attributes}
       style={{
-        color: props.leaf.color || "#000000",
-        fontWeight: props.leaf.bold ? "bold" : "normal",
+        color: props.leaf?.color,
+        fontWeight: props.leaf.bold ? "bold" : undefined,
         fontSize: props.leaf.fontsize > 1 ? `${props.leaf.fontsize}em` : "1em",
       }}
     >

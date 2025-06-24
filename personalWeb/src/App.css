@@ -401,7 +401,6 @@ input:checked + .slider:before {
   background-color: whitesmoke;
   border-radius: 15px;
   padding: 15px;
-  color: #000000;
 }
 .insert-features {
   display: flex;
