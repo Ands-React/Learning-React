@@ -38,7 +38,7 @@ const withLinks = (editor) => {
 };
 
 export const InsertUI = () => {
-  const arrowCodes = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
+  const arrowCodes = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "End"];
 
   const operation = useSelector((state) => state.ui.operation);
   const light = useSelector((state) => state.ui.light);
@@ -48,8 +48,9 @@ export const InsertUI = () => {
   const dispatch = useDispatch();
 
   const [editor] = useState(() =>
-    withLinks(withHistory(withReact(createEditor())))
+    withReact(withLinks(withHistory(createEditor())))
   );
+
   const [currentColor, setCurrentColor] = useState("#000000");
   const [editorKey, setEditorKey] = useState(0); // 強制讓slate重新渲染初始值
   const [dataToIndexedDB, setDataToIndexedDB] = useState({
@@ -141,6 +142,7 @@ export const InsertUI = () => {
       return;
     }
     const serializesHTML = serializes(dataToIndexedDB.article);
+    // console.log(serializesHTML)
     const idMap = { insert: Date.now(), edit: selectedID };
     const id = idMap[dataToIndexedDB.type];
     const articleData = {
@@ -163,6 +165,12 @@ export const InsertUI = () => {
 
     // console.log(Object.prototype.toString.call(dataToIndexedDB.article));
   };
+
+  const handleAddLink = useCallback(
+    (url) => CustomEditor.addLink(editor, url),
+
+    [editor]
+  );
 
   // 選擇渲染 block-level 元素的函數。
   const renderElement = useCallback((props) => {
@@ -404,7 +412,15 @@ export const InsertUI = () => {
             renderPlaceholder={renderPlaceholder}
             onKeyDown={(event) => {
               if (arrowCodes.includes(event.code)) return;
-
+              if (event.code === "Backspace") {
+                const [linkEntry] = Editor.nodes(editor, {
+                  match: (n) => n.type === "link",
+                  mode: "lowest",
+                });
+                if (linkEntry) {
+                  CustomEditor.unwrapList(editor);
+                }
+              }
               if (!event.altKey) {
                 Editor.removeMark(editor, "color");
                 Editor.removeMark(editor, "type");
@@ -476,11 +492,7 @@ export const InsertUI = () => {
         </div>
       </form>
       {showLink && (
-        <AddLink
-          editor={editor}
-          addlink={(editor, url) => CustomEditor.addLink(editor, url)}
-          setShowLink={setShowLink}
-        />
+        <AddLink addlink={handleAddLink} setShowLink={setShowLink} />
       )}
       {insertLoading && <div className="spinner" />}
     </>
@@ -586,19 +598,19 @@ const ListElement = (props) => {
 };
 
 const Link = (props) => {
-  console.log(props);
+  // console.log(props);
   const editor = useSlateStatic();
   const selected = useSelected();
   const focused = useFocused();
 
   return (
-    <span className="element-link">
+    <div className="element-link">
       <a {...props.attributes} href={props.element.url}>
         {props.children}
       </a>
       {selected && focused && (
         <div className="popup" contentEditable={false}>
-          <a href={props.element.url} rel="noreferrer" target="_blank">
+          <a href={props.element.url} rel="noopener noreferrer" target="_blank">
             {props.element.url}
           </a>
 
@@ -610,6 +622,6 @@ const Link = (props) => {
           </span>
         </div>
       )}
-    </span>
+    </div>
   );
 };

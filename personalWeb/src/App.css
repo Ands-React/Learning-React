@@ -524,7 +524,7 @@ code {
   display: flex;
   align-items: center;
   background-color: white;
-  padding: px;
+  padding: 5px;
   gap: 10px;
   border-radius: 6px;
   border: 1px solid lightgray;

@@ -45,6 +45,8 @@ export const serializes = (node) => {
         return `<ol class="unifiedList" ${attrString && `style="${attrString}"`}}>${children}</ol>`;
       case "ul":
         return `<ul class="unifiedList" ${attrString && `style="${attrString}"`}}>${children}</ul>`;
+      case "link":
+        return `<a href=${n.url} rel="noopener noreferrer" target="_blank">${children}</a>`;
       case "li":
         return `<li>${children}</li>`;
       default:

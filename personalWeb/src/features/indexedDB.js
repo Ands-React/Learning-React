@@ -20,11 +20,11 @@ export const insertData = (data) => {
   const objectStore = transaction.objectStore("article");
   const request = objectStore.put(data);
   request.onsuccess = (event) => {
-    console.log("資料新增成功!", event.target.result);
+    console.log("資料暫存成功!", event.target.result);
   };
 
   request.onerror = (event) => {
-    console.error(`資料庫新增出現錯誤：${event.target.errorCode}`);
+    console.error(`暫存出現錯誤：${event.target.errorCode}`);
   };
 };
 

@@ -1,6 +1,6 @@
 import { useEffect, useState, memo } from "react";
 
-export const AddLink = memo(({ editor, addlink, setShowLink }) => {
+export const AddLink = memo(({ addlink, setShowLink }) => {
   const [url, setUrl] = useState("");
   const [message, setMessage] = useState("貼上超連結");
   useEffect(() => {
@@ -28,7 +28,7 @@ export const AddLink = memo(({ editor, addlink, setShowLink }) => {
       setMessage("無效的連結");
       return;
     }
-    addlink(editor, pureURL);
+    addlink(pureURL);
     setShowLink(false);
   };
   return (
@@ -42,7 +42,7 @@ export const AddLink = memo(({ editor, addlink, setShowLink }) => {
           onChange={(e) => setUrl(e.target.value)}
           onKeyDown={(e) => {
             if (e.code === "Enter") {
-              handleSubmit();
+              handleSubmit;
             }
           }}
           autoFocus

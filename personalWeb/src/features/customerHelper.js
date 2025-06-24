@@ -17,7 +17,6 @@ const CustomEditor = {
   unwrapList(editor) {
     Transforms.unwrapNodes(editor, {
       match: (n) =>
-        !Editor.isEditor(n) &&
         Element.isElement(n) &&
         (n.type === "link" || n.type === "ol" || n.type === "ul"),
       split: true,
@@ -192,18 +191,26 @@ const CustomEditor = {
 
   addLink(editor, url) {
     const { selection } = editor;
-    if (!selection) return;
-    ReactEditor.focus(editor);
-    if (Range.isCollapsed(selection)) {
-      Transforms.insertNodes(editor, {
+    CustomEditor.unwrapList(editor);
+
+    if (!selection || Range.isCollapsed(selection)) {
+      const linkNode = {
         type: "link",
         url,
-        children: [{ text: "Link" }],
-      });
+        children: [{ text: "連結" }],
+      };
+
+      // 插入連結節點
+      Transforms.insertNodes(editor, linkNode, { select: false });
     } else {
       Transforms.wrapNodes(editor, { type: "link", url }, { split: true });
       Transforms.collapse(editor, { edge: "end" });
     }
+
+    Transforms.insertNodes(editor, { text: "" });
+
+    Transforms.select(editor, Editor.end(editor, []));
+    ReactEditor.focus(editor);
   },
 };
 

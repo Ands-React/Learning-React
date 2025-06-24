@@ -3,7 +3,7 @@ import { deleteData, insertData } from "./indexedDB";
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://personalbackend-8b4m.onrender.com", // 替換為你的後端 API 網域
+  baseURL: "http://localhost:3000", // 替換為你的後端 API 網域
 });
 
 // 攔截器：每次請求自動加上 JWT
@@ -134,7 +134,7 @@ export const setLogin = createAsyncThunk(
   "profile/login",
   async (data, thunkAPI) => {
     try {
-      const response = await axios.post("https://personalbackend-8b4m.onrender.com/login", data);
+      const response = await axios.post("http://localhost:3000/login", data);
       return response.data;
     } catch (err) {
       console.log(err);
@@ -176,7 +176,7 @@ export const getArticlesByDB = createAsyncThunk(
   "profile/getArticlesByDB",
   async (_, thunkAPI) => {
     try {
-      const response = await axios.post("https://personalbackend-8b4m.onrender.com/getArticles");
+      const response = await axios.post("http://localhost:3000/getArticles");
       return response.data;
     } catch (err) {
       return thunkAPI.rejectWithValue({
