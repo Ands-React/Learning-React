@@ -6,8 +6,8 @@ import {
   editArticlesToDB,
 } from "./features/profileSlice";
 import { cancelUI } from "./features/uiSlice";
-import { createEditor, Editor, Node, ReactEditor } from "slate";
-import { Slate, Editable, withReact } from "slate-react";
+import { createEditor, Editor, Node } from "slate";
+import { Slate, Editable, withReact, ReactEditor } from "slate-react";
 import { withHistory } from "slate-history";
 import CustomEditor from "./features/customerHelper";
 import { insertData, getData } from "./features/indexedDB";
