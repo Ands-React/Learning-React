@@ -192,8 +192,12 @@ const CustomEditor = {
   addLink(editor, url) {
     const { selection } = editor;
     if (!selection) return;
-    
-    CustomEditor.unwrapList(editor);
+
+    Transforms.unwrapNodes(editor, {
+      match: (n) =>
+        !Editor.isEditor(n) && Element.isElement(n) && n.type === "link",
+    });
+
     if (Range.isCollapsed(selection)) {
       const linkNode = {
         type: "link",
@@ -202,7 +206,7 @@ const CustomEditor = {
       };
 
       // 插入連結節點
-      Transforms.insertNodes(editor, linkNode, { select: false });
+      Transforms.insertNodes(editor, linkNode, { select: true });
     } else {
       Transforms.wrapNodes(editor, { type: "link", url }, { split: true });
       Transforms.collapse(editor, { edge: "end" });

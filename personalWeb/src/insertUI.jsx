@@ -6,7 +6,7 @@ import {
   editArticlesToDB,
 } from "./features/profileSlice";
 import { cancelUI } from "./features/uiSlice";
-import { createEditor, Editor, Node } from "slate";
+import { createEditor, Editor, Node, Range, Element, Transforms } from "slate";
 import {
   Slate,
   Editable,
@@ -36,6 +36,33 @@ const withLinks = (editor) => {
   };
   return editor;
 };
+const withRemoveLinkOnDelete = (editor) => {
+  const { deleteBackward } = editor;
+
+  editor.deleteBackward = (...args) => {
+    const { selection } = editor;
+    // 只在有選取、且是折疊游標情況下生效
+    if (selection && Range.isCollapsed(selection)) {
+      // 找到最近的 link element
+      const [linkEntry] = Editor.nodes(editor, {
+        match: (n) => Element.isElement(n) && n.type === "link",
+        mode: "lowest",
+      });
+
+      if (linkEntry) {
+        const [, linkPath] = linkEntry;
+        // 刪除整個 link 節點
+        Transforms.removeNodes(editor, { at: linkPath });
+        return; // 不繼續執行原本的 deleteBackward
+      }
+    }
+
+    // fallback：執行原本的刪除行為
+    deleteBackward(...args);
+  };
+
+  return editor;
+};
 
 export const InsertUI = () => {
   const ignoreKeyCodes = [
@@ -54,7 +81,7 @@ export const InsertUI = () => {
   const dispatch = useDispatch();
 
   const [editor] = useState(() =>
-    withReact(withLinks(withHistory(createEditor())))
+    withReact(withRemoveLinkOnDelete(withLinks(withHistory(createEditor()))))
   );
 
   const [currentColor, setCurrentColor] = useState("#000000");
@@ -418,15 +445,6 @@ export const InsertUI = () => {
             renderPlaceholder={renderPlaceholder}
             onKeyDown={(event) => {
               if (ignoreKeyCodes.includes(event.code)) return;
-              if (event.code === "Backspace") {
-                const [linkEntry] = Editor.nodes(editor, {
-                  match: (n) => n.type === "link",
-                  mode: "lowest",
-                });
-                if (linkEntry) {
-                  CustomEditor.unwrapList(editor);
-                }
-              }
               if (!event.altKey) {
                 Editor.removeMark(editor, "color");
                 Editor.removeMark(editor, "type");
